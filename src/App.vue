@@ -23,10 +23,14 @@
   <button @click="handleDrawAdd">新增围栏</button>
   <button @click="handleDrawClose">结束编辑</button>
   <button @click="handleDrawDelete">删除围栏</button>
+
+  <!-- infowindow -->
+  <button @click="openInfoWindow">打开信息体窗口</button>
+  <button @click="closeInfoWindow">关闭信息体窗口</button>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, Component, createApp } from 'vue';
 import { useAMapLoader } from '@/hooks/useAMap';
 import MoveAlong from '@/components/MoveAlong.vue';
 import CirclePathDraw from '@/components/CirclePathDraw/index.vue';
@@ -35,9 +39,11 @@ import carImg from '@/assets/images/car.png';
 
 let AMap: Map_2.Map;
 let map: Map_2.Map;
-const lonlat = ref<Array<number>>([116.478935, 39.997761]);
+
+
 
 // 创建地图
+const lonlat = ref<Array<number>>([116.478935, 39.997761]);
 const createMap = async () => {
   if (AMap) { return };
   if (typeof AMap === 'undefined') {
@@ -54,7 +60,11 @@ const createMap = async () => {
   map = new AMap.Map('map-contain', mapOption);
 };
 
+
+
+
 // 轨迹组件
+// const moveAlongRef = ref<HTMLDivElement | null>(null);
 const moveAlongRef = ref<any>()
 const handleStart = () => {
   moveAlongRef.value.handleStart();
@@ -68,6 +78,9 @@ const handleResume = () => {
 const handleStop = () => {
   moveAlongRef.value.handleStop();
 }
+
+
+
 
 // 围栏组件
 const circlePathDrawRef = ref<any>();
@@ -100,12 +113,64 @@ const handlePath = (datas: { center: AMap.LngLat, radius: number, path: Array<AM
   console.log('handlePath', datas)
 }
 
+
+
+
+// 信息体窗口
+let infoWindow: AMap.InfoWindow;
+// 封装打开infoWindow
+const handleOpenInfoWindow = (
+  content: string | HTMLElement,
+  position: [number, number] = [116.397389, 39.909466],
+) => {
+  if (infoWindow.getIsOpen()) {
+    infoWindow.setPosition(position);
+  } else {
+    // @ts-ignore
+    infoWindow.open(map, position);
+  }
+  infoWindow.setContent(content);
+};
+
+// 封装关闭infoWindow
+const closeInfoWindow = () => {
+  infoWindow.close();
+};
+
+// 通过vue组件传入
+const openInfoWindow = async () => {
+  infoWindow = new AMap.InfoWindow({
+    isCustom: true,
+    // content: '', 传入 dom 对象，或者 html 字符串
+  });
+  // 引入需要加载的子组件
+  const InfoWindow = (await (await import('@/components/InfoWindow.vue')).default) as any;
+  const dom = bootstrap(InfoWindow, { title: 'test' }, closeInfoWindow);
+  handleOpenInfoWindow(dom);
+};
+
+// 创建实例
+const bootstrap = (comp: Component, data: Record<string, any>, closeFn: () => void) => {
+  const wrapper = document.createElement('div');
+  const app = createApp(comp, {
+    data,
+    close: () => {
+      closeFn?.();
+      app.unmount();
+    },
+  });
+  app.mount(wrapper);
+  return wrapper as HTMLElement;
+};
+
+
+
 onMounted(async () => {
   await createMap();
   // 绘制轨迹
   // await moveAlongRef.value.moveAnimate(map, AMap);
   // 绘制多边形
-  await circlePathDrawRef.value.handleDraw(map, AMap);
+  // await circlePathDrawRef.value.handleDraw(map, AMap);
 })
 </script>
 

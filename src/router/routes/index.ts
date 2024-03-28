@@ -28,6 +28,14 @@ routeModuleList.push(
           title: '信息体窗口',
         },
       },
+      {
+        path: 'dragroad',
+        name: 'DragRoad',
+        component: () => import('@/views/dragRoad.vue'),
+        meta: {
+          title: '路径规划',
+        },
+      },
     ],
   },
 );

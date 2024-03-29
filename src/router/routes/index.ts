@@ -44,6 +44,22 @@ routeModuleList.push(
           title: '地点搜索',
         },
       },
+      {
+        path: 'esticMarker',
+        name: 'EsticMarker',
+        component: () => import('@/views/esticMarker.vue'),
+        meta: {
+          title: '灵活点标记',
+        },
+      },
+      {
+        path: 'marker',
+        name: 'Marker',
+        component: () => import('@/views/marker.vue'),
+        meta: {
+          title: '动态引入点标记',
+        },
+      },
     ],
   },
 );

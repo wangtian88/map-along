@@ -19,8 +19,8 @@ const handleDrag = (map: Map_2.Map, AMap: Map_2.Map) => {
   arr.push(new AMap.LngLat(116.410703, 39.897555)); //初始的导航终点
 
   AMap.plugin('AMap.DragRoute', async () => {
-    dragRoute = new AMap.DragRoute(map, arr, AMap.DrivingPolicy.LEAST_FEE);
-    dragRoute.search();
+    // dragRoute = new AMap.DragRoute(map, arr, AMap.DrivingPolicy.LEAST_FEE);
+    // dragRoute.search();
 
     // 导航路径绘制完成触发  货车汽车通用
     // dragRoute.on('complete', () => {

@@ -27,7 +27,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, onDeactivated, onUnmounted } from 'vue';
 import { useAMapLoader } from '@/hooks/useAMap';
 import MoveAlong from '@/components/MoveAlong.vue';
 import CirclePathDraw from '@/components/CirclePathDraw/index.vue';
@@ -119,6 +119,15 @@ onMounted(async () => {
   // 绘制多边形
   await circlePathDrawRef.value.handleDraw(map, AMap);
 })
+
+onDeactivated(() => {
+  map && map.destroy();
+});
+
+onUnmounted(() => {
+  // 注销地图实例
+  map && map.destroy();
+});
 </script>
 
 <style scoped lang="less">

@@ -1278,4 +1278,31 @@ declare namespace Map_2 {
     /** 获取信息窗体大小 */
     public getSize(): Size;
   }
+  
+  /**
+   * PlaceSearch配置项接口
+   */
+   export interface PlaceSearchOption {
+    /* 单页显示结果条数 */
+    pageSize: number, 
+
+    /* 单页显示结果条数页码 */
+    pageIndex: number, 
+
+    /* 获取详细信息 */
+    extensions: string,
+
+    /* 是否自动调整地图视野使绘制的 Marker点都处于视口的可见范围 */
+    autoFitView: boolean,
+  }
+
+  /**
+   * PlaceSearch类
+   */
+  export class PlaceSearch {
+    /** 构建地点搜索对象，使用PlaceSearch的配置项 */
+    constructor(opt: PlaceSearchOption);
+
+    public search(): void;
+  }
 }

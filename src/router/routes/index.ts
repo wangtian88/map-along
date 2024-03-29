@@ -36,6 +36,14 @@ routeModuleList.push(
           title: '路径规划',
         },
       },
+      {
+        path: 'search',
+        name: 'Search',
+        component: () => import('@/views/search.vue'),
+        meta: {
+          title: '地点搜索',
+        },
+      },
     ],
   },
 );

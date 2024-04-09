@@ -8,12 +8,12 @@ import { useAMapLoader } from '@/hooks/useAMap';
 import { useDebounceFn } from "@/hooks/useDebounceFn";
 
 const keyWord = ref<string>();
-let AMap: Map_2.Map;
+let amap: AMap.Map;
 
 // 搜索后
 const debounceSearch = async () => {
-  if (!AMap) {
-    AMap = await useAMapLoader({ loaderPlugins: ["AMap.PlaceSearch"] });
+  if (!amap) {
+    amap = await useAMapLoader({ loaderPlugins: ["AMap.PlaceSearch"] });
   }
   
   const placeSearch = new AMap.PlaceSearch({

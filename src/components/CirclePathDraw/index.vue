@@ -45,8 +45,7 @@ const props = defineProps({
 const { path, circleData, isOne } = props;
 const { type } = toRefs(props);
 
-let map: Map_2.Map;
-let AMap: Map_2.Map;
+let map: AMap.Map;
 
 // 多边形实例
 let polygon: AMap.Polygon;
@@ -88,11 +87,10 @@ const handlePolygonDraw = () => {
 
 	closeDraw();
 
-	polygon = new AMap.Polygon({
-		...polygonOptionsJson
-	})
+	// @ts-ignore
+	polygon = new AMap.Polygon(polygonOptionsJson)
 
-	map.plugin(['AMap.PolygonEditor'], () => {
+	AMap.plugin(['AMap.PolygonEditor'], () => {
 		//实例化多边形编辑器，传入地图实例和要进行编辑的多边形实例
 		polygonEditor = new AMap.PolygonEditor(map, polygon);
 		// polygonEditor = new AMap.PolygonEditor(map);
@@ -132,7 +130,7 @@ const handleCircleDraw = () => {
 		...circleOptionJson
 	})
 
-	map.plugin(['AMap.CircleEditor'], () => {
+	AMap.plugin(['AMap.CircleEditor'], () => {
 		//实例化多边形编辑器，传入地图实例和要进行编辑的多边形实例
 		// circleEditor = new AMap.CircleEditor(map, circle);
 		circleEditor = new AMap.CircleEditor(map);
@@ -210,14 +208,14 @@ const handleDrawDelete = () => {
 	const isCircleEdit = circleEditor && circleEditor._editing;
 	if (isPolyEdit) {
 		// 获取当前编辑对象
-		const polygonEvent = polygonEditor.getTarget();
+		const polygonEvent = polygonEditor.getTarget() as any;
 		// 删除覆盖物
 		map.remove(polygonEvent);
 		// 销毁内存中的覆盖物
 		polygonEvent && polygonEvent.destroy();
 	} else if (isCircleEdit) {
 		// 获取当前编辑对象
-		const circleEvent = circleEditor.getTarget();
+		const circleEvent = circleEditor.getTarget() as any;
 		// 删除覆盖物
 		map.remove(circleEvent);
 		// 销毁内存中的覆盖物
@@ -232,6 +230,7 @@ const creatPolygonByData = () => {
 	// 判断是否有已绘制的数据，并加入
 	if (path && path.length > 0 && AMap) {
 		path.forEach(item => {
+			// @ts-ignore
 			const pathPolygon = new AMap.Polygon({
 				...polygonOptionsJson,
 				path: item,
@@ -249,7 +248,7 @@ const creatPolygonByData = () => {
 const creatCircleByData = () => {
 	// 判断是否有传入的数据
 	if (circleData && circleData.length > 0 && AMap) {
-		circleData.forEach((item: { center: number[], radius: number }) => {
+		circleData.forEach((item: { center: [number, number], radius: number }) => {
 			const { center, radius } = item;
 			const circlePath =  new AMap.Circle({
 				...circleOptionJson,
@@ -280,9 +279,8 @@ const drawType = async () => {
 	}
 }
 
-const handleDraw = (mapData: Map_2.Map, AMapData: Map_2.Map) => {
+const handleDraw = (mapData: AMap.Map) => {
 	map = mapData;
-	AMap = AMapData;
 	drawType();
 	// creatPolygonByData();
 	// creatCircleByData();

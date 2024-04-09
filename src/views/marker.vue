@@ -1,6 +1,5 @@
 <!--
-  灵活点标记
-  可以随着地图级别改变样式和大小的 Marker
+  动态引入点标记
 -->
 
 <template>
@@ -11,10 +10,10 @@
 import { ref, onMounted } from 'vue';
 import { useAMapLoader } from '@/hooks/useAMap';
 
-let AMap: Map_2.Map;
-let map: Map_2.Map;
+let amap: AMap.Map;
+let map: AMap.Map;
 
-const stopArrNumber: number[][] = [
+const stopArrNumber: [number, number][] = [
   [116.410738, 39.880882],
   [116.421, 39.8609],
   [116.431, 39.8814],
@@ -23,17 +22,18 @@ const stopArrNumber: number[][] = [
 ]
 
 const initMap = async () => {
-  if (!AMap) {
-    AMap = await useAMapLoader();
-    const mapOption = {
+  if (!amap) {
+    amap = await useAMapLoader();
+    const mapOption: AMap.MapOptions = {
       center: [116.405562, 39.881166],
       zoom: 17,
+      // @ts-ignore
       forceVector: true,
     };
     map = new AMap.Map('map-contain', mapOption);
   }
 
-  let stopMarker: AMap.Marker[] = stopArrNumber.map((item: number[], index: number) => {
+  let stopMarker: AMap.Marker[] = stopArrNumber.map((item: [number, number], index: number) => {
     // vite静态资源处理
     const imgUrl = new URL(
       `/src/assets/images/stop/stop-${(index + 1) % 3}.png`,

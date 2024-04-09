@@ -17,11 +17,12 @@
 <template></template>
 
 <script setup lang="ts">
+import { PropType } from 'vue';
 import carIcon from '@/assets/images/car.png';
 
 const props = defineProps({
 	lonlat: {
-		type: Array<number>,
+		type: Object as PropType<AMap.Vector2 | AMap.LngLat>,
 		default: [116.478935, 39.997761]
 	},
 	carImg: {
@@ -33,7 +34,7 @@ const props = defineProps({
 		default: 500,
 	},
 	lineArr: {
-		type: Array<Array<number>>,
+		type: Object as PropType<AMap.LngLatLike[] | AMap.LngLatLike[][]>,
 	},
 })
 
@@ -43,7 +44,7 @@ const { lonlat, carImg, duration, lineArr } = props;
 let marker: AMap.Marker;
 
 // 加载动画插件
-const moveAnimate = (map: Map_2.Map, AMap: Map_2.Map) => {
+const moveAnimate = (map: AMap.Map) => {
 	if (typeof map === 'undefined') {
 		return;
 	}
@@ -57,6 +58,7 @@ const moveAnimate = (map: Map_2.Map, AMap: Map_2.Map) => {
 	AMap.plugin('AMap.MoveAnimation', async () => {
 		// 绘制轨迹
 		new AMap.Polyline({
+			// @ts-ignore
 			map: map,
 			path: lineArr,
 			showDir: true,
@@ -67,6 +69,7 @@ const moveAnimate = (map: Map_2.Map, AMap: Map_2.Map) => {
 		});
 
 		const passedPolyline = new AMap.Polyline({
+			// @ts-ignore
 			map: map,
 			strokeColor: "#AF5",  //线颜色
 			strokeWeight: 6,      //线宽

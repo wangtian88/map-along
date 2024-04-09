@@ -34,22 +34,22 @@ import CirclePathDraw from '@/components/CirclePathDraw/index.vue';
 import { lineArr } from '@/components/datas/line';
 import carImg from '@/assets/images/car.png';
 
-let AMap: Map_2.Map;
-let map: Map_2.Map;
+let amap: AMap.Map;
+let map: AMap.Map;
 
 
 
 // 创建地图
-const lonlat = ref<Array<number>>([116.478935, 39.997761]);
+const lonlat: [number, number] = [116.478935, 39.997761];
 const createMap = async () => {
-  if (AMap) { return };
-  if (typeof AMap === 'undefined') {
+  if (amap) { return };
+  if (typeof amap === 'undefined') {
     // 可以在这里直接引入需要加载的loaderPlugins方法，也可在实例map中plugin进去
     // AMap = await useAMapLoader({loaderPlugins: ['AMap.PolygonEditor']});
-    AMap = await useAMapLoader();
+    amap = await useAMapLoader();
   }
-  const mapOption = {
-    center: lonlat.value,
+  const mapOption: AMap.MapOptions = {
+    center: lonlat,
     zoom: 12,
     // viewMode: "3D",
     // pitch: 50,
@@ -115,9 +115,9 @@ const handlePath = (datas: { center: AMap.LngLat, radius: number, path: Array<AM
 onMounted(async () => {
   await createMap();
   // 绘制轨迹
-  await moveAlongRef.value.moveAnimate(map, AMap);
+  await moveAlongRef.value.moveAnimate(map);
   // 绘制多边形
-  await circlePathDrawRef.value.handleDraw(map, AMap);
+  await circlePathDrawRef.value.handleDraw(map);
 })
 
 onDeactivated(() => {

@@ -11,8 +11,8 @@
 import { ref, onMounted } from 'vue';
 import { useAMapLoader } from '@/hooks/useAMap';
 
-let AMap: Map_2.Map;
-let map: Map_2.Map;
+let amap: AMap.Map;
+let map: AMap.Map;
 
 // 样式列表
 const stylesArray = [{
@@ -60,11 +60,12 @@ const zoomStyleMapping = {
 };
 
 const initMap = async () => {
-  if (!AMap) {
-    AMap = await useAMapLoader({ loaderPlugins: ["AMap.ElasticMarker"] });
-    const mapOption = {
+  if (!amap) {
+    amap = await useAMapLoader({ loaderPlugins: ["AMap.ElasticMarker"] });
+    const mapOption: AMap.MapOptions = {
       center: [116.405562, 39.881166],
       zoom: 17,
+      // @ts-ignore
       forceVector: true,
     };
     map = new AMap.Map('map-contain', mapOption);

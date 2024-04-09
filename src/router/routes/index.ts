@@ -60,6 +60,14 @@ routeModuleList.push(
           title: '动态引入点标记',
         },
       },
+      {
+        path: 'tileLayer',
+        name: 'TileLayer',
+        component: () => import('@/views/tileLayer.vue'),
+        meta: {
+          title: '区域掩模',
+        },
+      },
     ],
   },
 );

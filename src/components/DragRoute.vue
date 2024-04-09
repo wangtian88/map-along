@@ -3,8 +3,8 @@
 <script setup lang="ts">
 let dragRoute: any;
 
-const handleDrag = (map: Map_2.Map, AMap: Map_2.Map) => {
-  if (typeof AMap === 'undefined') {
+const handleDrag = (map: AMap.Map) => {
+  if (typeof map === 'undefined') {
     return;
   }
 

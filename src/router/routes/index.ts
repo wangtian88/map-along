@@ -68,6 +68,14 @@ routeModuleList.push(
           title: '区域掩模',
         },
       },
+      {
+        path: 'echartsLine',
+        name: 'EchartsLine',
+        component: () => import('@/views/echartsLine.vue'),
+        meta: {
+          title: '折线图',
+        },
+      },
     ],
   },
 );

@@ -12,6 +12,8 @@
     "@amap/amap-jsapi-loader": "^1.0.1",
     "@amap/amap-jsapi-types": "^0.0.15",
     "@types/node": "^20.11.30",
+    "echarts": "^5.5.1",
+    "echarts-gl": "^2.0.9",
     "less": "^4.2.0",
     "less-loader": "^12.2.0",
     "typescript": "^5.4.3",
